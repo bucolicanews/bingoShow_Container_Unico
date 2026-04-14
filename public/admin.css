@@ -1,0 +1,364 @@
+/* Variáveis CSS */
+:root {
+    --cor-primaria: #2563eb;
+    --cor-secundaria: #64748b;
+    --cor-sucesso: #10b981;
+    --cor-perigo: #ef4444;
+    --cor-alerta: #f59e0b;
+    --cor-fundo: #f8fafc;
+    --cor-superficie: #ffffff;
+    --cor-texto: #1e293b;
+    --cor-texto-secundario: #64748b;
+    --sombra-leve: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --sombra-media: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --sombra-forte: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --raio-borda: 12px;
+    --transicao: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset e estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Container principal */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    background: var(--cor-superficie);
+    border-radius: var(--raio-borda);
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--sombra-leve);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cor-texto);
+}
+
+.status-jogo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status.aguardando {
+    background-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.status.ativo {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status.pausado {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.status.finalizado {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* Main */
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+/* Seções */
+section {
+    background: var(--cor-superficie);
+    border-radius: var(--raio-borda);
+    padding: 24px;
+    box-shadow: var(--sombra-leve);
+}
+
+section h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--cor-texto);
+}
+
+/* Cronômetro */
+.cronometro-section {
+    grid-column: span 2;
+}
+
+.cronometro-display {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.cronometro {
+    font-size: 72px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    color: var(--cor-primaria);
+    display: block;
+}
+
+.barra-progresso {
+    width: 100%;
+    height: 8px;
+    background-color: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progresso {
+    height: 100%;
+    background-color: var(--cor-primaria);
+    transition: width 1s linear;
+}
+
+/* Último número */
+.ultimo-numero-section {
+    text-align: center;
+}
+
+.ultimo-numero {
+    font-size: 96px;
+    font-weight: 800;
+    color: var(--cor-sucesso);
+    display: block;
+    margin-top: 16px;
+}
+
+/* Controles */
+.controles-section {
+    grid-column: span 2;
+}
+
+.botoes-controle {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transicao);
+    text-align: center;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-media);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primario {
+    background-color: var(--cor-primaria);
+    color: white;
+}
+
+.btn-primario:hover:not(:disabled) {
+    background-color: #1d4ed8;
+}
+
+.btn-secundario {
+    background-color: var(--cor-secundaria);
+    color: white;
+}
+
+.btn-secundario:hover:not(:disabled) {
+    background-color: #475569;
+}
+
+.btn-perigo {
+    background-color: var(--cor-perigo);
+    color: white;
+}
+
+.btn-perigo:hover:not(:disabled) {
+    background-color: #dc2626;
+}
+
+.btn-especial {
+    background-color: var(--cor-alerta);
+    color: white;
+}
+
+.btn-especial:hover:not(:disabled) {
+    background-color: #d97706;
+}
+
+/* Números sorteados */
+.numeros-section {
+    grid-column: span 2;
+}
+
+.info-numeros {
+    margin-bottom: 16px;
+    font-size: 18px;
+    color: var(--cor-texto-secundario);
+}
+
+.numeros-sorteados {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 8px;
+    background-color: #f1f5f9;
+    border-radius: 8px;
+}
+
+.numero-sorteado {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cor-primaria);
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    animation: numeroEntrada 0.5s ease-out;
+}
+
+@keyframes numeroEntrada {
+    from {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Estatísticas */
+.estatisticas-section {
+    grid-column: span 2;
+}
+
+.cards-estatisticas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.card-estatistica {
+    background-color: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+}
+
+.card-estatistica h3 {
+    font-size: 14px;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.valor-estatistica {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--cor-primaria);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+    
+    .main {
+        grid-template-columns: 1fr;
+    }
+    
+    .cronometro-section,
+    .controles-section,
+    .numeros-section,
+    .estatisticas-section {
+        grid-column: span 1;
+    }
+    
+    .cronometro {
+        font-size: 48px;
+    }
+    
+    .ultimo-numero {
+        font-size: 64px;
+    }
+    
+    .botoes-controle {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Animações de entrada */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+section {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+section:nth-child(1) { animation-delay: 0.1s; }
+section:nth-child(2) { animation-delay: 0.2s; }
+section:nth-child(3) { animation-delay: 0.3s; }
+section:nth-child(4) { animation-delay: 0.4s; }
+section:nth-child(5) { animation-delay: 0.5s; }

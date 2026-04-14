@@ -1,0 +1,34 @@
+services:
+  app_bingo:
+    image: bingo-buddy:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_bingo
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
+      - PORT=8082
+
+  caddy:
+    image: caddy:2.8
+    container_name: caddy_lan
+    restart: unless-stopped
+    depends_on:
+      - app_bingo
+    environment:
+      APP_HOST: ${LAN_APP_HOST:-bingo.lan}
+      SUPABASE_HOST: ${LAN_SUPABASE_HOST:-supabase.lan}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./infra/caddy/data:/data
+      - ./infra/caddy/config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -1,0 +1,21 @@
+{
+  auto_https disable_redirects
+}
+
+http://{$APP_HOST:bingo.lan} {
+  reverse_proxy app_bingo:8082
+}
+
+https://{$APP_HOST:bingo.lan} {
+  tls internal
+  reverse_proxy app_bingo:8082
+}
+
+http://{$SUPABASE_HOST:supabase.lan} {
+  reverse_proxy host.docker.internal:54321
+}
+
+https://{$SUPABASE_HOST:supabase.lan} {
+  tls internal
+  reverse_proxy host.docker.internal:54321
+}

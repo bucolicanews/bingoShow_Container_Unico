@@ -1,0 +1,3 @@
+-- Seed local intencionalmente vazio.
+-- O admin padrao local e criado pelo script scripts/bootstrap-local-admin.mjs
+-- executado automaticamente apos `npm run s-start`.

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Sorteio de Números</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Painel Administrativo</h1>
+            <div class="status-jogo">
+                <span id="status" class="status">Aguardando início</span>
+            </div>
+        </header>
+
+        <main class="main">
+            <!-- Seção do Cronômetro -->
+            <section class="cronometro-section">
+                <h2>Cronômetro</h2>
+                <div class="cronometro-display">
+                    <span id="cronometro" class="cronometro">00:00</span>
+                </div>
+                <div class="barra-progresso">
+                    <div id="progresso" class="progresso"></div>
+                </div>
+            </section>
+
+            <!-- Seção do Último Número -->
+            <section class="ultimo-numero-section">
+                <h2>Último Número Sorteado</h2>
+                <div id="ultimoNumero" class="ultimo-numero">--</div>
+            </section>
+
+            <!-- Seção de Controles -->
+            <section class="controles-section">
+                <h2>Controles do Jogo</h2>
+                <div class="botoes-controle">
+                    <button id="btnIniciar" class="btn btn-primario">Iniciar Jogo</button>
+                    <button id="btnPausar" class="btn btn-secundario" disabled>Pausar</button>
+                    <button id="btnContinuar" class="btn btn-primario" disabled>Continuar</button>
+                    <button id="btnResetar" class="btn btn-perigo">Resetar</button>
+                    <button id="btnSortearManual" class="btn btn-especial" disabled>Sortear Manual</button>
+                </div>
+            </section>
+
+            <!-- Seção de Números Sorteados -->
+            <section class="numeros-section">
+                <h2>Números Sorteados</h2>
+                <div class="info-numeros">
+                    <span>Total: <strong id="totalNumeros">0</strong>/75</span>
+                </div>
+                <div id="numerosSorteados" class="numeros-sorteados">
+                    <!-- Números serão adicionados dinamicamente -->
+                </div>
+            </section>
+
+            <!-- Seção de Estatísticas -->
+            <section class="estatisticas-section">
+                <h2>Estatísticas</h2>
+                <div class="cards-estatisticas">
+                    <div class="card-estatistica">
+                        <h3>Números Pares</h3>
+                        <span id="numerosPares" class="valor-estatistica">0</span>
+                    </div>
+                    <div class="card-estatistica">
+                        <h3>Números Ímpares</h3>
+                        <span id="numerosImpares" class="valor-estatistica">0</span>
+                    </div>
+                    <div class="card-estatistica">
+                        <h3>Primeira Metade</h3>
+                        <span id="primeiraMetade" class="valor-estatistica">0</span>
+                    </div>
+                    <div class="card-estatistica">
+                        <h3>Segunda Metade</h3>
+                        <span id="segundaMetade" class="valor-estatistica">0</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Show - Documentação Técnica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lexend', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lexend:wght@600;700;800&display=swap');
+        
+        .prose code::before, .prose code::after {
+            content: '';
+        }
+        .prose code {
+            font-size: 0.9em;
+            padding: 0.2em 0.4em;
+            margin: 0;
+            border-radius: 6px;
+            background-color: #f3f4f6;
+            color: #111827;
+            font-weight: 500;
+        }
+        .prose pre {
+            border: 1px solid #e5e7eb;
+        }
+        .prose pre code {
+            background-color: transparent;
+            color: #e5e7eb;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="flex">
+        <!-- Sidebar / Table of Contents -->
+        <aside class="hidden lg:block w-64 h-screen sticky top-0 bg-white border-r border-gray-200 p-6">
+            <h3 class="font-bold text-lg mb-4">Navegação</h3>
+            <nav>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#features" class="text-gray-600 hover:text-blue-600 font-medium">Funcionalidades</a></li>
+                    <li><a href="#stack" class="text-gray-600 hover:text-blue-600 font-medium">Arquitetura</a></li>
+                    <li><a href="#data-model" class="text-gray-600 hover:text-blue-600 font-medium">Modelo de Dados</a></li>
+                    <li><a href="#security" class="text-gray-600 hover:text-blue-600 font-medium">Segurança (RLS)</a></li>
+                    <li><a href="#backend" class="text-gray-600 hover:text-blue-600 font-medium">Lógica de Backend</a></li>
+                    <li><a href="#structure" class="text-gray-600 hover:text-blue-600 font-medium">Estrutura do Projeto</a></li>
+                    <li><a href="#run" class="text-gray-600 hover:text-blue-600 font-medium">Como Executar</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-10 lg:p-12">
+            <article class="prose prose-lg max-w-none">
+                <div class="mb-12">
+                    <span class="text-blue-600 font-semibold">Documentação Técnica</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mt-2">
+                        🎱 Bingo Show de Prêmios
+                    </h1>
+                    <p class="text-xl text-gray-600">
+                        Uma plataforma web <em>real-time</em> e <em>multi-tenant</em> para gerenciamento e execução de jogos de bingo e rifas online. Projetada para ser uma solução robusta e escalável, permitindo que múltiplos administradores gerenciem seus próprios ecossistemas de forma isolada e segura.
+                    </p>
+                </div>
+
+                <section id="features" class="mb-12">
+                    <h2 class="border-b pb-2">Funcionalidades Principais</h2>
+                    <div class="grid md:grid-cols-3 gap-6 not-prose mt-6">
+                        <div class="bg-white p-6 rounded-lg border">
+                            <h3 class="font-bold text-lg mb-2">👨‍💻 Para Administradores</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Painel Multi-Tenant</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Gestão Financeira (Entradas/Saídas)</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Motor de Automação de Partidas</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Sistema de Vendedores e Comissões</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Acompanhamento de Lucro (Caixa)</span></li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg border">
+                            <h3 class="font-bold text-lg mb-2">🏪 Para Vendedores</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Painel de Vendas e Fiado</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Emissão de Bilhetes Físicos com QR Code</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Links de Indicação para Comissão</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Perfil Público Verificado</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Acerto de Contas via PIX ou Saldo</span></li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg border">
+                            <h3 class="font-bold text-lg mb-2">🎮 Para Jogadores</h3>
+                            <ul class="space-y-2 text-sm text-gray-600">
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Lobby com Atualização em Tempo Real</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Hall da Fama (Ranking de Ganhadores)</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Criação de Cartelas Personalizadas</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Créditos Reais e "de Brincar"</span></li>
+                                <li class="flex items-start gap-2"><span class="text-blue-500 mt-1">✓</span><span>Marcação Automática ou Manual</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="stack" class="mb-12">
+                    <h2 class="border-b pb-2">Arquitetura e Stack Tecnológica</h2>
+                    <div class="overflow-x-auto not-prose mt-6">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 font-bold border-b">Categoria</th>
+                                    <th class="p-4 font-bold border-b">Tecnologia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-4"><strong>Frontend</strong></td><td class="p-4">React, Vite, TypeScript</td></tr>
+                                <tr class="border-b"><td class="p-4"><strong>UI & Estilização</strong></td><td class="p-4">Tailwind CSS, shadcn/ui</td></tr>
+                                <tr class="border-b"><td class="p-4"><strong>Estado & Cache</strong></td><td class="p-4">TanStack Query (Server State), React Context (Client State)</td></tr>
+                                <tr class="border-b"><td class="p-4"><strong>Roteamento</strong></td><td class="p-4">React Router</td></tr>
+                                <tr class="border-b"><td class="p-4"><strong>Formulários</strong></td><td class="p-4">React Hook Form + Zod</td></tr>
+                                <tr class="border-b"><td class="p-4"><strong>Backend</strong></td><td class="p-4">Supabase (PostgreSQL, Auth, Edge Functions, Realtime, Storage)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="data-model" class="mb-12">
+                    <h2 class="border-b pb-2">Modelo de Dados (Schema PostgreSQL)</h2>
+                    <p>O banco de dados é o coração do sistema. Todas as colunas financeiras utilizam o tipo <code>numeric</code> para garantir precisão decimal. A segurança é garantida por políticas de <strong>Row Level Security (RLS)</strong> em todas as tabelas críticas.</p>
+                    
+                    <h3>Entidades Principais</h3>
+                    <div class="overflow-x-auto not-prose mt-4">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 font-bold border-b">Tabela</th>
+                                    <th class="p-4 font-bold border-b">Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-4"><code>perfis</code></td><td class="p-4">Armazena dados de todos os usuários (jogadores, vendedores, admins). Contém os saldos <code>credits</code> e <code>fake_credits</code>.</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>partidas</code></td><td class="p-4">Define as partidas de bingo, incluindo tipo, preço, prêmio, status e números sorteados (<code>called_numbers</code>).</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>cartelas_jogador</code></td><td class="p-4">As cartelas "mestras" que um jogador possui em sua conta, com os números e usos restantes (<code>uses_left</code>).</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>cartelas_partida</code></td><td class="p-4">Uma "cópia" de uma <code>cartelas_jogador</code> quando ela é usada para entrar em uma <code>partida</code> específica. Armazena os números marcados.</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>configuracoes</code></td><td class="p-4">Tabela singleton que armazena todas as configurações globais do sistema, incluindo o lucro do admin (<code>admin_profit</code>).</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>vitorias</code></td><td class="p-4">Registro histórico de cada vitória, usado para alimentar o Hall da Fama e o perfil do jogador.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="mt-6">Módulo de Vendedores e Vendas Físicas</h3>
+                    <div class="overflow-x-auto not-prose mt-4">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="p-4 font-bold border-b">Tabela</th>
+                                    <th class="p-4 font-bold border-b">Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b"><td class="p-4"><code>vendedores_rifa</code></td><td class="p-4">Perfil oficial do vendedor, contendo taxas de comissão/desconto e o código de referência (<code>codigo_ref</code>).</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>solicitacoes_vendedor</code></td><td class="p-4">Registra os pedidos de usuários para se tornarem vendedores, aguardando aprovação do admin.</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>vendas_bingo_fisico</code></td><td class="p-4">Armazena cada "folha" de bingo impressa por um vendedor, com seus grids, código de validação e status de pagamento.</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>compras_rifa</code></td><td class="p-4">Similar ao anterior, mas para cotas de rifas vendidas por vendedores.</td></tr>
+                                <tr class="border-b"><td class="p-4"><code>acertos_vendedor</code></td><td class="p-4">Registra as transações de "acerto de contas", onde o vendedor repassa o dinheiro das vendas (fiado) para o admin.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="security" class="mb-12">
+                    <h2 class="border-b pb-2">Modelo de Segurança (Row Level Security)</h2>
+                    <p>A segurança e o isolamento de dados são pilares da arquitetura, garantidos por políticas RLS.</p>
+                    
+                    <h3 class="mt-6">Isolamento de Usuário</h3>
+                    <p>A política mais comum garante que um usuário só possa ver e modificar seus próprios dados.</p>
+                    <div class="code-block-wrapper not-prose"><div class="code-header"><span class="lang">SQL</span><button class="copy-btn">Copiar</button></div><pre class="bg-gray-900 rounded-b-lg p-4 text-sm overflow-x-auto"><code class="language-sql text-gray-300">-- Exemplo: Usuários só podem ver suas próprias cartelas.
+CREATE POLICY "Users can manage their own cards"
+ON public.cartelas_jogador FOR ALL
+USING (auth.uid() = player_id);</code></pre></div>
+
+                    <h3 class="mt-6">Isolamento de Tenant (Multi-Tenant)</h3>
+                    <p>A coluna <code>admins_id</code> está presente em quase todas as tabelas. As políticas de RLS para administradores garantem que um admin só possa acessar os dados pertencentes ao seu "tenant".</p>
+                    <div class="code-block-wrapper not-prose"><div class="code-header"><span class="lang">SQL</span><button class="copy-btn">Copiar</button></div><pre class="bg-gray-900 rounded-b-lg p-4 text-sm overflow-x-auto"><code class="language-sql text-gray-300">-- Exemplo: Admins só podem ver partidas que eles criaram.
+CREATE POLICY "Admins view own matches"
+ON public.partidas FOR SELECT
+USING (is_admin() AND admin_id = auth.uid());</code></pre></div>
+                </section>
+
+                <section id="backend" class="mb-12">
+                    <h2 class="border-b pb-2">Lógica de Backend (RPCs & Edge Functions)</h2>
+                    <p>A lógica de negócio complexa é encapsulada em Funções PostgreSQL (acessíveis via RPC) e Deno Edge Functions.</p>
+                    
+                    <h3 class="mt-6">Funções PostgreSQL (RPC)</h3>
+                    <ul>
+                        <li><code>pagar_acerto_com_saldo()</code>: Processa o pagamento de dívidas de um vendedor usando seu próprio saldo de créditos, calculando e creditando a comissão automaticamente.</li>
+                        <li><code>reservar_numeros_vendedor()</code>: Gerencia a venda de cotas de rifa por vendedores, aplicando descontos e tratando pagamentos (à vista ou fiado).</li>
+                        <li><code>call-number()</code>: <strong>O coração do jogo.</strong> Sorteia um número, marca automaticamente as cartelas, verifica se há vencedores, e se houver, finaliza a partida e distribui os prêmios.</li>
+                        <li><code>join-match()</code> / <code>leave-match()</code>: Funções seguras que gerenciam a entrada e saída de jogadores, realizando as transações de crédito e estorno de forma atômica.</li>
+                    </ul>
+
+                    <h3 class="mt-6">Deno Edge Functions (Automação)</h3>
+                    <ul>
+                        <li><strong><code>auto-match-engine</code></strong>: Executado a cada X minutos, verifica a agenda configurada pelo admin e cria novas partidas de bingo automaticamente para preencher os "slots" de horários vagos.</li>
+                        <li><strong><code>auto-call-engine</code></strong>: Executado a cada minuto, este motor verifica partidas atrasadas para iniciar, sorteia novos números e garante que o lobby nunca fique vazio.</li>
+                        <li><strong><code>stripe-webhook</code></strong>: Endpoint seguro para receber eventos do Stripe, processar pagamentos e liberar créditos ou validar cartelas automaticamente.</li>
+                    </ul>
+                </section>
+
+                <section id="structure" class="mb-12">
+                    <h2 class="border-b pb-2">Estrutura do Projeto</h2>
+                    <div class="code-block-wrapper not-prose"><div class="code-header"><span class="lang"></span><button class="copy-btn">Copiar</button></div><pre class="bg-gray-900 rounded-b-lg p-4 text-sm overflow-x-auto"><code class="language-text text-gray-300">/
+├── supabase/                # Configurações e scripts do Supabase
+│   ├── functions/           # Código das Deno Edge Functions
+│   └── migrations/          # Migrações do schema do banco de dados
+└── src/                     # Código-fonte do frontend React
+    ├── components/          # Componentes reutilizáveis (incluindo /ui para shadcn)
+    ├── contexts/            # Provedores de Contexto (AuthContext, GameContext)
+    ├── hooks/               # Hooks customizados para lógica de negócio e data fetching
+    ├── integrations/        # Configuração de clientes de serviços (Supabase)
+    ├── pages/               # Componentes de página (rotas)
+    ├── types/               # Definições de tipos TypeScript
+    └── utils/               # Funções utilitárias</code></pre></div>
+                </section>
+
+                <section id="run" class="mb-12">
+                    <h2 class="border-b pb-2">Como Executar Localmente</h2>
+                    <ol>
+                        <li><strong>Clone o repositório:</strong>
+                            <div class="code-block-wrapper not-prose"><div class="code-header"><span class="lang">Bash</span><button class="copy-btn">Copiar</button></div><pre class="bg-gray-900 rounded-b-lg p-4 text-sm overflow-x-auto"><code class="language-bash text-gray-300">git clone <repository-url></code></pre></div>
+                        </li>
+                        <li><strong>Instale as dependências:</strong>
+                            <div class="code-block-wrapper not-prose"><div class="code-header"><span class="lang">Bash</span><button class="copy-btn">Copiar</button></div><pre class="bg-gray-900 rounded-b-lg p-4 text-sm overflow-x-auto"><code class="language-bash text-gray-300">npm install</code></pre></div>
+                        </li>
+                        <li><strong>Inicie o ambiente Supabase:</strong> (Requer <a href="https://supabase.com/docs/guides/cli">Supabase CLI</a>)
+                            <div class="code-block-wrapper not-prose"><div class="code-header"><span class="lang">Bash</span><button class="copy-btn">Copiar</button></div><pre class="bg-gray-900 rounded-b-lg p-4 text-sm overflow-x-auto"><code class="language-bash text-gray-300">supabase start</code></pre></div>
+                        </li>
+                        <li><strong>Aplique as migrações:</strong>
+                            <div class="code-block-wrapper not-prose"><div class="code-header"><span class="lang">Bash</span><button class="copy-btn">Copiar</button></div><pre class="bg-gray-900 rounded-b-lg p-4 text-sm overflow-x-auto"><code class="language-bash text-gray-300">supabase db reset</code></pre></div>
+                        </li>
+                        <li><strong>Inicie o servidor de desenvolvimento:</strong>
+                            <div class="code-block-wrapper not-prose"><div class="code-header"><span class="lang">Bash</span><button class="copy-btn">Copiar</button></div><pre class="bg-gray-900 rounded-b-lg p-4 text-sm overflow-x-auto"><code class="language-bash text-gray-300">npm run dev</code></pre></div>
+                        </li>
+                    </ol>
+                </section>
+            </article>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.code-block-wrapper').forEach(wrapper => {
+                const copyButton = wrapper.querySelector('.copy-btn');
+                const code = wrapper.querySelector('code');
+                if (copyButton && code) {
+                    copyButton.addEventListener('click', () => {
+                        navigator.clipboard.writeText(code.innerText).then(() => {
+                            copyButton.textContent = 'Copiado!';
+                            setTimeout(() => {
+                                copyButton.textContent = 'Copiar';
+                            }, 2000);
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

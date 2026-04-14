@@ -1,0 +1,314 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 40% 96%;
+    --foreground: 220 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 15%;
+
+    --primary: 174 72% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 30 30% 90%;
+    --secondary-foreground: 220 25% 15%;
+
+    --muted: 30 20% 92%;
+    --muted-foreground: 220 15% 45%;
+
+    --accent: 16 85% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 142 70% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 20% 85%;
+    --input: 30 20% 85%;
+    --ring: 174 72% 40%;
+
+    --radius: 1rem;
+
+    --font-heading: 'Fredoka', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    --shadow-card: 0 4px 20px -4px hsl(220 25% 15% / 0.1);
+    --shadow-button: 0 4px 12px -2px hsl(174 72% 40% / 0.3);
+    --shadow-accent: 0 4px 12px -2px hsl(16 85% 60% / 0.4);
+
+    --gradient-primary: linear-gradient(135deg, hsl(174 72% 40%), hsl(174 72% 50%));
+    --gradient-accent: linear-gradient(135deg, hsl(16 85% 55%), hsl(16 85% 65%));
+    --gradient-success: linear-gradient(135deg, hsl(142 70% 40%), hsl(142 70% 50%));
+    --gradient-hero: linear-gradient(135deg, hsl(174 72% 35%), hsl(200 70% 45%));
+  }
+
+  .dark {
+    --background: 220 25% 10%;
+    --foreground: 30 20% 95%;
+
+    --card: 220 25% 14%;
+    --card-foreground: 30 20% 95%;
+
+    --popover: 220 25% 14%;
+    --popover-foreground: 30 20% 95%;
+
+    --primary: 174 72% 50%;
+    --primary-foreground: 220 25% 10%;
+
+    --secondary: 220 20% 20%;
+    --secondary-foreground: 30 20% 95%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 30 15% 60%;
+
+    --accent: 16 85% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 142 70% 50%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 22%;
+    --input: 220 20% 22%;
+    --ring: 174 72% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer components {
+  .bingo-ball {
+    @apply w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold shadow-lg transition-all duration-300;
+    background: var(--gradient-accent);
+    color: hsl(var(--accent-foreground));
+    box-shadow: var(--shadow-accent);
+  }
+
+  .bingo-ball:hover {
+    transform: scale(1.1);
+  }
+
+  .bingo-cell {
+    @apply w-full aspect-square rounded-lg flex items-center justify-center text-sm sm:text-lg font-semibold transition-all duration-200 cursor-pointer;
+    background: hsl(var(--secondary));
+    color: hsl(var(--foreground));
+  }
+
+  .bingo-cell.marked {
+    background: var(--gradient-accent);
+    color: hsl(var(--accent-foreground));
+    transform: scale(0.95);
+    box-shadow: var(--shadow-accent);
+  }
+
+  .bingo-cell.free {
+    background: var(--gradient-success);
+    color: hsl(var(--success-foreground));
+  }
+
+  .card-container {
+    @apply bg-card rounded-2xl p-4 transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px -8px hsl(220 25% 15% / 0.15);
+  }
+
+  .card-container.winner {
+    @apply ring-4 ring-success;
+    animation: pulse-winner 1s ease-in-out infinite;
+  }
+
+  @keyframes pulse-winner {
+    0%, 100% {
+      box-shadow: 0 0 0 0 hsl(142 70% 45% / 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 12px hsl(142 70% 45% / 0);
+    }
+  }
+
+  @keyframes pop-in {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-pop {
+    animation: pop-in 0.3s ease-out forwards;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-bounce-in {
+    animation: bounce-in 0.5s ease-out forwards;
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.4s ease-out forwards;
+  }
+
+  @keyframes flash-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); background: hsl(var(--accent)); box-shadow: 0 0 20px hsl(var(--accent) / 0.5); }
+    100% { transform: scale(0.95); background: var(--gradient-accent); box-shadow: var(--shadow-accent); }
+  }
+
+  .animate-flash {
+    animation: flash-animation 0.7s ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes saved-animation {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-saved {
+    animation: saved-animation 0.3s ease-out;
+  }
+
+  @keyframes comment-float-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px) scale(0.94);
+    }
+    15% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    85% {
+      opacity: 1;
+      transform: translateY(-46px) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-64px) scale(0.96);
+    }
+  }
+
+  .match-comment-float {
+    @apply rounded-xl border border-primary/20 bg-card/95 px-3 py-2 shadow-lg backdrop-blur;
+    animation: comment-float-up 3.2s ease-out forwards;
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .gradient-success {
+    background: var(--gradient-success);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-button {
+    box-shadow: var(--shadow-button);
+  }
+
+  .print-hide {
+    @apply print:hidden;
+  }
+
+  .break-inside-avoid {
+    break-inside: avoid;
+  }
+}
+
+@media print {
+  body {
+    background-color: white !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .print-container {
+    padding: 0;
+    background-color: white;
+  }
+}
