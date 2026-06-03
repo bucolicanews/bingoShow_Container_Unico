@@ -16,7 +16,10 @@ ENV VITE_LIVE_SERVER_URL=$VITE_LIVE_SERVER_URL
 ENV VITE_REALTIME_URL=$VITE_REALTIME_URL
 
 COPY . .
-RUN npm run build
+# BUILD_MODE=easepanel usa .env.easepanel (URLs EasyPanel self-hosted)
+# BUILD_MODE vazio usa .env.production (padrão)
+ARG BUILD_MODE
+RUN if [ "$BUILD_MODE" = "easepanel" ]; then npm run build:easepanel; else npm run build; fi
 RUN npm prune --omit=dev
 
 FROM node:20-alpine AS runner
