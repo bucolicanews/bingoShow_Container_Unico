@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "innocentmanda.groq-coder"
+        "innocentmanda.groq-coder",
+        "github.copilot-chat"
     ]
 }
