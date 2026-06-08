@@ -142,6 +142,8 @@ services:
     image: supabase/realtime:v2.33.68
     container_name: supabase_realtime
     restart: unless-stopped
+    ports:
+      - "4000:4000"  # EasePanel cria domínio separado aqui — bypass Traefik→Kong para WSS
     depends_on:
       db:
         condition: service_healthy
@@ -239,6 +241,7 @@ services:
         VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
         VITE_SUPABASE_PUBLISHABLE_KEY: ${VITE_SUPABASE_PUBLISHABLE_KEY}
         VITE_LIVE_SERVER_URL: ${VITE_LIVE_SERVER_URL}
+        BUILD_MODE: easepanel
     container_name: app_bingo
     restart: unless-stopped
     ports:
