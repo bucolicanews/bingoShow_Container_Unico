@@ -3123,6 +3123,7 @@ CREATE OR REPLACE FUNCTION "public"."update_game_settings"("p_settings" "jsonb")
     AS $$
 DECLARE
   v_caller_role TEXT;
+  v_config_id   uuid;
 BEGIN
   SELECT role INTO v_caller_role FROM perfis WHERE id = auth.uid();
   IF v_caller_role NOT IN ('admin', 'dev') THEN
@@ -3133,9 +3134,12 @@ BEGIN
     RETURN jsonb_build_object('success', false, 'error', 'call_interval_too_low');
   END IF;
 
-  -- Garante que a linha de configuração existe para este admin
-  IF NOT EXISTS (SELECT 1 FROM configuracoes WHERE admin_id = auth.uid()) THEN
-    INSERT INTO configuracoes (admin_id) VALUES (auth.uid());
+  -- Pega o ID da linha singleton (a mais antiga)
+  SELECT id INTO v_config_id FROM configuracoes ORDER BY created_at ASC NULLS LAST LIMIT 1;
+
+  -- Cria se não existir nenhuma
+  IF v_config_id IS NULL THEN
+    INSERT INTO configuracoes (admin_id) VALUES (auth.uid()) RETURNING id INTO v_config_id;
   END IF;
 
   UPDATE configuracoes SET
@@ -3187,7 +3191,7 @@ BEGIN
     live_external_stream_key       = COALESCE(p_settings->>'live_external_stream_key',               live_external_stream_key),
     live_external_youtube_url      = COALESCE(p_settings->>'live_external_youtube_url',              live_external_youtube_url),
     live_external_facebook_url     = COALESCE(p_settings->>'live_external_facebook_url',             live_external_facebook_url)
-  WHERE admin_id = auth.uid();
+  WHERE id = v_config_id;
 
   RETURN jsonb_build_object('success', true);
 END;
@@ -5173,10 +5177,6 @@ ALTER TABLE "public"."vitorias" ENABLE ROW LEVEL SECURITY;
 ALTER PUBLICATION "supabase_realtime" OWNER TO "postgres";
 
 
-
-
-
-
 ALTER PUBLICATION "supabase_realtime" ADD TABLE ONLY "public"."cartelas_partida";
 
 
@@ -5196,6 +5196,12 @@ GRANT USAGE ON SCHEMA "public" TO "postgres";
 GRANT USAGE ON SCHEMA "public" TO "anon";
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
 GRANT USAGE ON SCHEMA "public" TO "service_role";
+
+
+
+
+
+
 
 
 
@@ -5494,9 +5500,9 @@ GRANT ALL ON FUNCTION "public"."enviar_acerto_vendedor"("p_vendedor_id" "uuid", 
 
 
 REVOKE ALL ON FUNCTION "public"."enviar_comprovante_cliente_bingo"("p_codigo" "text", "p_nome" "text", "p_telefone" "text", "p_endereco" "text", "p_comprovante" "text") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."enviar_comprovante_cliente_bingo"("p_codigo" "text", "p_nome" "text", "p_telefone" "text", "p_endereco" "text", "p_comprovante" "text") TO "anon";
 GRANT ALL ON FUNCTION "public"."enviar_comprovante_cliente_bingo"("p_codigo" "text", "p_nome" "text", "p_telefone" "text", "p_endereco" "text", "p_comprovante" "text") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."enviar_comprovante_cliente_bingo"("p_codigo" "text", "p_nome" "text", "p_telefone" "text", "p_endereco" "text", "p_comprovante" "text") TO "service_role";
-GRANT ALL ON FUNCTION "public"."enviar_comprovante_cliente_bingo"("p_codigo" "text", "p_nome" "text", "p_telefone" "text", "p_endereco" "text", "p_comprovante" "text") TO "anon";
 
 
 
@@ -6071,147 +6077,6 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 
 
 
-
-
-
-
-
-
-
-drop extension if exists "pg_net";
-
-create extension if not exists "pg_net" with schema "public";
-
-CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-
-
-  create policy "Admin insert all receipts"
-  on "storage"."objects"
-  as permissive
-  for insert
-  to authenticated
-with check (((bucket_id = 'receipts'::text) AND (EXISTS ( SELECT 1
-   FROM public.perfis
-  WHERE ((perfis.id = auth.uid()) AND (perfis.role = ANY (ARRAY['admin'::public.user_role, 'dev'::public.user_role])))))));
-
-
-
-  create policy "Admin read all receipts"
-  on "storage"."objects"
-  as permissive
-  for select
-  to authenticated
-using (((bucket_id = 'receipts'::text) AND (EXISTS ( SELECT 1
-   FROM public.perfis
-  WHERE ((perfis.id = auth.uid()) AND (perfis.role = ANY (ARRAY['admin'::public.user_role, 'dev'::public.user_role])))))));
-
-
-
-  create policy "Allow Anonymous Read"
-  on "storage"."objects"
-  as permissive
-  for select
-  to anon
-using ((bucket_id = 'comprovantes_bingo'::text));
-
-
-
-  create policy "Allow Anonymous Uploads"
-  on "storage"."objects"
-  as permissive
-  for insert
-  to anon
-with check ((bucket_id = 'comprovantes_bingo'::text));
-
-
-
-  create policy "Avatar images are publicly accessible."
-  on "storage"."objects"
-  as permissive
-  for select
-  to public
-using ((bucket_id = 'avatars'::text));
-
-
-
-  create policy "Public Read Comprovantes Bingo"
-  on "storage"."objects"
-  as permissive
-  for select
-  to public
-using ((bucket_id = 'comprovantes_bingo'::text));
-
-
-
-  create policy "Public Upload Comprovantes Bingo"
-  on "storage"."objects"
-  as permissive
-  for insert
-  to public
-with check ((bucket_id = 'comprovantes_bingo'::text));
-
-
-
-  create policy "Public read access for prizes"
-  on "storage"."objects"
-  as permissive
-  for select
-  to public
-using ((bucket_id = 'prizes'::text));
-
-
-
-  create policy "Users can delete their own avatar."
-  on "storage"."objects"
-  as permissive
-  for delete
-  to authenticated
-using ((auth.uid() = owner));
-
-
-
-  create policy "Users can update their own avatar."
-  on "storage"."objects"
-  as permissive
-  for update
-  to authenticated
-using ((auth.uid() = owner));
-
-
-
-  create policy "Users can upload receipts"
-  on "storage"."objects"
-  as permissive
-  for insert
-  to authenticated
-with check (((bucket_id = 'receipts'::text) AND ((auth.uid())::text = (storage.foldername(name))[1])));
-
-
-
-  create policy "Users can upload their own avatar."
-  on "storage"."objects"
-  as permissive
-  for insert
-  to authenticated
-with check (((bucket_id = 'avatars'::text) AND (auth.uid() = owner)));
-
-
-
-  create policy "Users can upload their own receipts"
-  on "storage"."objects"
-  as permissive
-  for insert
-  to authenticated
-with check (((bucket_id = 'receipts'::text) AND (auth.uid() = ((storage.foldername(name))[1])::uuid)));
-
-
-
-  create policy "Users can view their own receipts"
-  on "storage"."objects"
-  as permissive
-  for select
-  to authenticated
-using (((bucket_id = 'receipts'::text) AND ((auth.uid())::text = (storage.foldername(name))[1])));
 
 
 
