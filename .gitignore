@@ -23,7 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 .dyad/
+# Env — apenas .env e .env_ex são usados (ver .env_ex para referência de ambientes)
 .env
+.env_ex
+.env.local
+.env.easepanel
 .env.production
 .env.production.local
 .env.development
