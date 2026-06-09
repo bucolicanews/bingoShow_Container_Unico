@@ -13,7 +13,7 @@
     "start": "node server.js",
     "server": "node server.js",
     "dev-s": "npm run dev:full",
-    "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
+    "dev:full": "concurrently \"npm run s-start\" \"npm run server\" \"npm run dev\" ",
     "dev:live": "npm run dev:full",
     "bootstrap:new": "node scripts/bootstrap-new-machine.mjs",
     "s-start": "supabase start && node scripts/write-local-env.mjs && node scripts/bootstrap-local-admin.mjs",

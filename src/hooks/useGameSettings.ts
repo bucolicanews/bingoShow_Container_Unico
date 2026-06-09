@@ -9,7 +9,7 @@ export const useGameSettings = () => {
   const { data: gameSettings } = useQuery({
     queryKey: ['gameSettings'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('configuracoes').select('*').limit(1).maybeSingle();
+      const { data, error } = await supabase.from('configuracoes').select('*').order('created_at', { ascending: true }).limit(1).maybeSingle();
       if (error || !data) return { 
         custo_nova_cartela: 10, 
         custo_recarga_cartela: 5, 

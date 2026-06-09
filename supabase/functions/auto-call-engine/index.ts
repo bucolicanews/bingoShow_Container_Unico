@@ -12,7 +12,9 @@ const cancelAutomaticMatchForSingleParticipant = async (supabaseAdmin: any, matc
   const { data: settings, error: settingsError } = await supabaseAdmin
     .from('configuracoes')
     .select('custo_recarga_cartela, usos_por_recarga')
-    .single();
+    .order('created_at', { ascending: true })
+    .limit(1)
+    .maybeSingle();
 
   if (settingsError) {
     throw new Error(`Erro ao buscar configuracoes para estorno: ${settingsError.message}`);
@@ -166,7 +168,7 @@ serve(async (req) => {
           await cancelAutomaticMatchForSingleParticipant(supabaseAdmin, match);
         } else {
           console.log(`[auto-call-engine] Iniciando partida com ${participantCount} participantes: ${match.name}`);
-          const { data: cfg } = await supabaseAdmin.from('configuracoes').select('intervalo_sorteio_auto_seg').single();
+          const { data: cfg } = await supabaseAdmin.from('configuracoes').select('intervalo_sorteio_auto_seg').order('created_at', { ascending: true }).limit(1).maybeSingle();
           const nextCall = new Date(Date.now() + (Number(cfg?.intervalo_sorteio_auto_seg || 10) * 1000)).toISOString();
           
           await supabaseAdmin.from('partidas').update({ 
@@ -203,7 +205,7 @@ serve(async (req) => {
         .like('name', 'Bingo Automático%'); // <-- CORREÇÃO CRÍTICA AQUI
 
       if ((openOrWaitingAutoCount || 0) === 0) {
-        const { data: settings } = await supabaseAdmin.from('configuracoes').select('*').single();
+        const { data: settings } = await supabaseAdmin.from('configuracoes').select('*').order('created_at', { ascending: true }).limit(1).maybeSingle();
         
         if (settings?.auto_engine_enabled) {
             const today = new Date();

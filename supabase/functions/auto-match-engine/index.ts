@@ -21,7 +21,9 @@ serve(async (req) => {
     const { data: settings, error: settingsError } = await supabaseAdmin
       .from('configuracoes')
       .select('*')
-      .single();
+      .order('created_at', { ascending: true })
+      .limit(1)
+      .maybeSingle();
 
     if (settingsError || !settings) throw new Error("Configurações não encontradas.");
 
