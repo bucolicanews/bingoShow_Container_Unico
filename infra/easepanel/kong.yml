@@ -15,6 +15,24 @@ services:
           - /auth/v1/verify
     plugins:
       - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+            - HEAD
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+            - X-Client-Info
+          credentials: false
+          max_age: 3600
 
   - name: auth-v1-open-callback
     url: http://auth:9999/callback
@@ -25,6 +43,24 @@ services:
           - /auth/v1/callback
     plugins:
       - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+            - HEAD
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+            - X-Client-Info
+          credentials: false
+          max_age: 3600
 
   - name: auth-v1-open-authorize
     url: http://auth:9999/authorize
@@ -35,6 +71,24 @@ services:
           - /auth/v1/authorize
     plugins:
       - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+            - HEAD
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+            - X-Client-Info
+          credentials: false
+          max_age: 3600
 
   # Auth (GoTrue) — rotas autenticadas
   - name: auth-v1
@@ -46,6 +100,24 @@ services:
           - /auth/v1/
     plugins:
       - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+            - HEAD
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+            - X-Client-Info
+          credentials: false
+          max_age: 3600
       - name: key-auth
         config:
           hide_credentials: false
@@ -60,6 +132,28 @@ services:
           - /rest/v1/
     plugins:
       - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+            - HEAD
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+            - X-Client-Info
+            - Content-Range
+            - Range
+          exposed_headers:
+            - Content-Range
+          credentials: false
+          max_age: 3600
       - name: key-auth
         config:
           hide_credentials: true
@@ -79,6 +173,24 @@ services:
           - /realtime/v1/
     plugins:
       - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+            - HEAD
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+            - X-Client-Info
+          credentials: false
+          max_age: 3600
       - name: key-auth
         config:
           hide_credentials: false
@@ -93,6 +205,24 @@ services:
           - /storage/v1/
     plugins:
       - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+            - HEAD
+          headers:
+            - Authorization
+            - Content-Type
+            - apikey
+            - X-Client-Info
+          credentials: false
+          max_age: 3600
       - name: key-auth
         config:
           hide_credentials: true
